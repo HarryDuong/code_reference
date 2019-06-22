@@ -21,4 +21,4 @@ WHERE r.rolname !~ '^pg_'
 ORDER BY 1;
 
 ------
---
+-- I want to test this --
