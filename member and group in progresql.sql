@@ -19,3 +19,5 @@ SELECT
 FROM pg_catalog.pg_roles r
 WHERE r.rolname !~ '^pg_'
 ORDER BY 1;
+
+--
