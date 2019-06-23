@@ -1,3 +1,2 @@
 # code_reference
-code reference
-testing
+This code reference is a notebook where I collect useful code snippet mainly for python.
