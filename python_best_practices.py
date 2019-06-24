@@ -67,3 +67,24 @@ print('Return Value = ', result)
 
 # person =  {'name': 'Phill', 'age': 22}
 # Return Value =  ('salary', 3500.0)
+
+
+#
+# ──────────────────────────────────────────────────────────────────────────────────
+#   :::::: P A N D A S   D A T A F R A M E : :  :   :    :     :        :          :
+# ──────────────────────────────────────────────────────────────────────────────────
+#
+
+# ─── DATAFRAME REPLACE ──────────────────────────────────────────────────────────
+
+DataFrame.replace(to_replace=None, value=None, inplace=False,
+                  limit=None, regex=False, method='pad')
+
+# to_replace : str, regex, list, dict, Series, int, float, or None
+
+# Using a list of dictionary for multiple replacment
+df.replace({'a': 1, 'b': 2, 'c:3'}, inplace=True)
+
+# Using Regex for newline cleanup
+
+
