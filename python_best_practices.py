@@ -35,7 +35,7 @@ for color in colors:
     d[color] = d.get(color, 0) + 1
 
 # Using default dict:
-d = defaultdict()
+d = defaultdict(int)
 
 for color in colors:
     d[color] += 1  # If color is not exists yet,
@@ -45,7 +45,7 @@ for color in colors:
 # Following code using default dict to group items together base on key.
 # keys can be defined by any critera.
 colors = ['red', 'green', 'blue', 'blue', 'red', 'red']
-d = defaultdict()
+d = defaultdict(list)
 for color in colors:
     key = len(color)
     d[key].append(color)
