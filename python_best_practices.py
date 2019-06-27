@@ -69,6 +69,42 @@ print('Return Value = ', result)
 # Return Value =  ('salary', 3500.0)
 
 
+# ─── CONVERT TIMESTAMP FROM UTC TO OTHER TIMEZONE  ─────────────────────────────────────────────────────────
+from datetime import datetime
+from dateutil import tz
+
+def convert_time_from_utc(timestamp, to_time_zone = 'Australia/Melbourne'):
+    """
+    Convert utc timestamp to other timestamp
+
+    Args:
+        timestamp: datetime object or string present datetime.
+                    if the input is string it must follow 'YYYY-MM-DD HH:MM:SS'
+        to_time_zone: to the desire timezone
+
+    Returns:
+        datetime object or string presenting datetime in new time zone
+    """
+
+    if type(timestamp) is str:
+        input_type = 'str'
+        timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+    elif (type(timestamp) is datetime) or (type(timestamp) is datetime.datetime):
+        input_type = 'datetime'
+    else:
+        raise ValueError('input timestamp must either string YYYY-MM-DD HH:MM:SS or a datetime object')
+
+    utc_tz = tz.gettz('UTC')
+    to_tz = tz.gettz(to_time_zone)
+
+    output = timestamp.replace(tzinfo = utc_tz)
+    output = output.astimezone(to_tz)
+
+    if input_type == 'str':
+        output = datetime.strftime(output, '%Y-%m-%dT%H:%M:%SZ')
+
+    return output
+
 #
 # ──────────────────────────────────────────────────────────────────────────────────
 #   :::::: P A N D A S   D A T A F R A M E : :  :   :    :     :        :          :
