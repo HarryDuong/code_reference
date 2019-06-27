@@ -115,7 +115,7 @@ def convert_time_from_utc(timestamp, to_time_zone = 'Australia/Melbourne', outpu
 from datetime import datetime, timezone, timedelta
 
 # today date at utc:
-datetime.today(timezone.utc)
+datetime.now(timezone.utc)
 
 # 5 days before current time:
 datetime.today() + timedelta(days = -5)
