@@ -1,4 +1,7 @@
 # ─── DISTINGUISHING MULTIPLE EXIT POINT ─────────────────────────────────────────
+from datetime import datetime, timezone, timedelta
+from dateutil import tz
+from datetime import datetime
 from collections import defaultdict
 
 
@@ -70,10 +73,9 @@ print('Return Value = ', result)
 
 
 # ─── CONVERT TIMESTAMP FROM UTC TO OTHER TIMEZONE  ─────────────────────────────────────────────────────────
-from datetime import datetime
-from dateutil import tz
 
-def convert_time_from_utc(timestamp, to_time_zone = 'Australia/Melbourne', output_format = None):
+
+def convert_time_from_utc(timestamp, to_time_zone='Australia/Melbourne', output_format=None):
     """
     Convert utc timestamp to other timestamp
 
@@ -96,12 +98,13 @@ def convert_time_from_utc(timestamp, to_time_zone = 'Australia/Melbourne', outpu
         elif (type(timestamp) is datetime) or (type(timestamp) is datetime.datetime):
             output_format = 'datetime'
         else:
-            raise ValueError('input timestamp must either string YYYY-MM-DD HH:MM:SS or a datetime object')
+            raise ValueError(
+                'input timestamp must either string YYYY-MM-DD HH:MM:SS or a datetime object')
 
     utc_tz = tz.gettz('UTC')
     to_tz = tz.gettz(to_time_zone)
 
-    output = timestamp.replace(tzinfo = utc_tz)
+    output = timestamp.replace(tzinfo=utc_tz)
     output = output.astimezone(to_tz)
 
     if output_format == 'datetime':
@@ -111,16 +114,26 @@ def convert_time_from_utc(timestamp, to_time_zone = 'Australia/Melbourne', outpu
     else:
         return datetime.strftime(output, output_format)
 
+
 # ─── GET TODAY DATE IN UTC TIME ZONE ─────────────────────────────────────────────────────────
-from datetime import datetime, timezone, timedelta
 
 # today date at utc:
 datetime.now(timezone.utc)
 
 # 5 days before current time:
-datetime.today() + timedelta(days = -5)
+datetime.today() + timedelta(days=-5)
 
+# ─── DOWNLOAD NO TEXT DATA FROM WEB ─────────────────────────────────────────────
+# when download image file from web and write it to disk using open method. 
+# There are cases that the image data is broken. Below code at least will warn us 
+# if the image file is broken
 
+import requests
+from PIL import Image
+from io import BytesIO
+r = requests.get(url)
+i = Image.open(BytesIO(r.content))
+i.save('file_name.jpg')
 
 #
 # ──────────────────────────────────────────────────────────────────────────────────
@@ -139,5 +152,3 @@ DataFrame.replace(to_replace=None, value=None, inplace=False,
 df.replace({'a': 1, 'b': 2, 'c:3'}, inplace=True)
 
 # Using Regex for newline cleanup
-
-
