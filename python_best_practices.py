@@ -152,3 +152,27 @@ DataFrame.replace(to_replace=None, value=None, inplace=False,
 df.replace({'a': 1, 'b': 2, 'c:3'}, inplace=True)
 
 # Using Regex for newline cleanup
+
+# ─── FIND A LIST OF DUPLICATED COLUMN NAME IN MULTIPLE DATA FRAME ───────────────
+
+all_columns = pd.Series(list(df1) + list(df2))
+all_columns[all_columns.duplicated()]
+
+# Note that list(df) give a list of column in a dataframe
+
+# ─── EXTRACT PHONE NUMBER ───────────────────────────────────────────────────────
+# Using str.extract function in pandas dataframe to apply regex pattern on 
+# a column and return a new column
+
+# Series.str.extract(pat, flags=0, expand=True)
+# Extract capture groups in the regex pat as columns in a DataFrame.
+
+# https://stackoverflow.com/a/16699507/3331408
+phone_pattern = r'((\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4})'
+patients_clean['phone_number'] = patients_clean.contact.str.extract(phone_pattern)[0]
+
+# ─── EXTRACT EMAIL ──────────────────────────────────────────────────────────────
+# http://emailregex.com/
+email_pattern = r"([a-zA-Z][a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)"
+patients_clean['email'] = patients_clean.contact.str.extract(email_pattern)
+
