@@ -114,6 +114,12 @@ def convert_time_from_utc(timestamp, to_time_zone='Australia/Melbourne', output_
     else:
         return datetime.strftime(output, output_format)
 
+# ─── GET EPOCH ──────────────────────────────────────────────────────────────────
+
+import time
+time.time() #==> give epoch number of seconds from 1 Jan 1970
+
+datetime.fromtimestamp(time.time()) #==> get timestamp from 
 
 # ─── GET TODAY DATE IN UTC TIME ZONE ─────────────────────────────────────────────────────────
 
