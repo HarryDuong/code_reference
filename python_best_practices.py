@@ -202,6 +202,34 @@ patients_clean['email'] = patients_clean.contact.str.extract(email_pattern)
 4  b        C      4
 5  c        C      6
 
+# ─── NUMPY ──────────────────────────────────────────────────────────────────────
+
+import numpy as np
+
+a = np.arange(0,36)
+
+array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+       34, 35])
+
+a = a.reshape(6,6)
+array([[ 0,  1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10, 11],
+       [12, 13, 14, 15, 16, 17],
+       [18, 19, 20, 21, 22, 23],
+       [24, 25, 26, 27, 28, 29],
+       [30, 31, 32, 33, 34, 35]])
+
+a = a.reshape(36)
+array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+       34, 35])
+
+a.reshape(36)[::7] # note the [::7], it steps every 7th elements
+array([ 0,  7, 14, 21, 28, 35])
+# https://docs.python.org/2.3/whatsnew/section-slices.html
+
+
 
 # ─── BARCHART WITH SEABORN ──────────────────────────────────────────────────────
 
@@ -358,3 +386,43 @@ for loc, label in zip(locs, labels):
 na_counts = df.isna().sum()
 base_color = sb.color_palette()[0]
 sb.barplot(na_counts.index.values, na_counts, color = base_color)
+
+# ─── PIE CHART ──────────────────────────────────────────────────────────────────
+# https://academy.datawrapper.de/article/127-what-to-consider-when-creating-a-pie-chart
+sorted_counts = df['cat_var'].value_counts()
+plt.pie(sorted_counts, labels = sorted_counts.index, startangle = 90,
+        counterclock = False);
+plt.axis('square')
+# axis square to make sure it's circle
+
+# ─── DONUT PLOT ─────────────────────────────────────────────────────────────────
+# wedgeprops for the width of the hole in middle of pie chart
+sorted_counts = df['cat_var'].value_counts()
+plt.pie(sorted_counts, labels = sorted_counts.index, startangle = 90,
+        counterclock = False, wedgeprops = {'width' : 0.4});
+plt.axis('square')
+
+# ─── HISTORGRAM ─────────────────────────────────────────────────────────────────
+
+plt.figure(figsize = [10, 5]) # larger figure size for subplots
+
+# histogram on left, example of too-large bin size
+plt.subplot(1, 2, 1) # 1 row, 2 cols, subplot 1
+bin_edges = np.arange(0, df['num_var'].max()+4, 4)
+plt.hist(data = df, x = 'num_var', bins = bin_edges)
+
+# histogram on right, example of too-small bin size
+plt.subplot(1, 2, 2) # 1 row, 2 cols, subplot 2
+bin_edges = np.arange(0, df['num_var'].max()+1/4, 1/4)
+plt.hist(data = df, x = 'num_var', bins = bin_edges)
+
+
+# ─── KDE ────────────────────────────────────────────────────────────────────────
+
+sb.distplot(df['num_var'])
+
+
+bin_edges = np.arange(0, df['num_var'].max()+1, 1)
+sb.distplot(df['num_var'], bins = bin_edges, kde = False,
+            hist_kws = {'alpha' : 1})
+
