@@ -432,3 +432,58 @@ bin_edges = np.arange(0, df['num_var'].max()+1, 1)
 sb.distplot(df['num_var'], bins = bin_edges, kde = False,
             hist_kws = {'alpha' : 1})
 
+
+
+# ------------------------------------------------------------------------------
+def parse_http_retry_after(hd):
+    """
+    Parse a HTTP Retry-After response header
+    Return number of seconds to wait. Default to 15 if Retry-Header doesn't
+    exist or isn't integer number of seconds or (limited type) parsable date
+    :param hd:  Headers from a http response (requests version)
+    :type hd:   dict
+    :return:        Number of seconds to wait
+    :rtype:         int
+    """
+    retry_time = 15
+    try:
+        retry_time = hd['Retry-After']
+        try:
+            retry_time = int(hd['Retry-After']) + 10
+            return retry_time
+        except ValueError:
+            pass
+        retry_time = datetime_val(retry_time)
+        retry_time = (retry_time - datetime_with_utc_tz()).total_seconds()
+        retry_time = round(retry_time) + 10
+    except KeyError:
+        pass
+    return retry_time
+
+def datetime_val(tv):
+    """
+    Uses dateutil parser. Set UTC for datetime without tzinfo
+    :param tv:  date
+    :type  tv:  str
+    :return:    datetime parsed result
+    :rtype:     datetime.datetime
+    """
+    tv = dateutil.parser.parse(tv)
+    if tv.tzinfo is None:
+        tv = tv.replace(tzinfo=dateutil.tz.UTC)
+    return tv
+
+def datetime_with_utc_tz():
+    """
+    Return the UTC time datetime set timezone UTC
+    To convert to a particular TZ use r_date.astimezone(dateutil.tz.gettz("Australia/Melbourne"))
+    or as offset time r_date.astimezone(dateutil.tz.tzstr("GMT+11:00", posix_offset=False))
+    :return:    current date and time with UTC timezone
+    :rtype:     datetime.datetime
+    """
+    return datetime.datetime.utcnow().replace(tzinfo=dateutil.tz.UTC)
+
+# ------------------------------------------------------------------------------
+# To get logger name
+PROG = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+LOG = logging.getLogger(name=PROG)
